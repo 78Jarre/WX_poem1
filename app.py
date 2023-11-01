@@ -6,8 +6,9 @@ from flask import Flask
 from flask import request
 from flask import jsonify
 from flask import Response
-
 from flask_cors import CORS
+
+from sqlalchemy import func
 
 from extension import db
 from models import Poem, Poetry
@@ -75,7 +76,20 @@ def Poetry_biology(PoetryName):
     poetry_content = db.get_or_404(Poetry, PoetryName)
     return Response(json.dumps(poetry_content),mimetype='application/json')
 
+#每日一诗
+@app.route('/daily-poem', methods=['GET'])
+def get_daily_poem():
+    random_poem = Poem.query.order_by(func.random()).first()  # 从数据库中随机获取一首诗
+    if random_poem:
+        return jsonify({"message": "success", "data": {"title": random_poem.title, "content": random_poem.content}})
+    else:
+        return jsonify({"message": "error", "data": None}), 404
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)
 
-print('a')
+if __name__ == '__main__':
+    app.run(debug=True)
+
