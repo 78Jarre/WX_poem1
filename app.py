@@ -84,7 +84,7 @@ def get_daily_poem():
         return jsonify({"message": "ok", "data": {"title": random_poem.title, "content": random_poem.content}})
     else:
         return jsonify({"message": "error", "data": None}), 404
-
+print(1)
 
 
 if __name__ == '__main__':
