@@ -42,16 +42,16 @@ def poem_list():
     return {"message": "ok", "data": [poem.json() for poem in poems]}
 
 
-@app.get('/poem/<int:pid>')
-def poem_detail(pid):
-    poem = db.get_or_404(Poem, pid)
-    return Response(json.dumps(poem),mimetype='application/json')
-
-
 # @app.get('/poem/<int:pid>')
 # def poem_detail(pid):
-#     poem = db.select(Poem).where(Poem.poem_id == pid).first()
-#     return {"message":"ok", "data":poem.json()}
+#     poem = db.get_or_404(Poem, pid)
+#     return Response(json.dumps(poem),mimetype='application/json')
+
+
+@app.get('/poem/<int:pid>')
+def poem_detail(pid):
+    poem = db.select(Poem).where(Poem.poem_id == pid).first()
+    return {"message":"ok", "data":poem.json()}
 
 @app.post('/poem')
 def poem_create():
@@ -73,15 +73,15 @@ def poem_delete(pid):
 
 @app.get('/poetry/<string:PoetryName>')
 def Poetry_biology(PoetryName):
-    poetry_content = db.get_or_404(Poetry, PoetryName)
-    return Response(json.dumps(poetry_content),mimetype='application/json')
+    poetry_content = db.select(Poetry).where(Poetry.poetry_name == PoetryName).first()
+    return {"message": "ok", "data": poetry_content.json()}
 
 #每日一诗
 @app.route('/daily-poem', methods=['GET'])
 def get_daily_poem():
     random_poem = Poem.query.order_by(func.random()).first()  # 从数据库中随机获取一首诗
     if random_poem:
-        return jsonify({"message": "success", "data": {"title": random_poem.title, "content": random_poem.content}})
+        return jsonify({"message": "ok", "data": {"title": random_poem.title, "content": random_poem.content}})
     else:
         return jsonify({"message": "error", "data": None}), 404
 

@@ -30,3 +30,24 @@ class Poem(db.Model):
             'poem_type': self.poem_type,
             'poem_content': self.poem_content
         }
+
+class Poetry(db.Model):
+    __tablename__ = 'poetry'
+    poetry_name = db.Column(db.String(255), primary_key=True,unique=True)
+    poetry_dynasty = db.Column(db.String(255), nullable=False)
+    poetry_content = (db.Column(db.Text))
+
+    def __init__(self, poetry_name ,poetry_dynasty, poetry_content):
+        self.poetry_name = poetry_name
+        self.poetry_dynasty = poetry_dynasty
+        self.poetry_content = poetry_content
+
+    def __repr__(self):
+        return '<Poetry %r>' % self.poetry_name
+
+    def json(self):
+        return {
+            'poetry_name': self.poetry_name,
+            'poetry_dynasty': self.poetry_dynasty,
+            'poetry_content': self.poetry_content,
+        }
